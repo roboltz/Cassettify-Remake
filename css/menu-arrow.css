@@ -1,0 +1,19 @@
+#menu-arrow {
+    display: flex;
+}
+
+#arrow-icon rect {
+    transition: transform 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+#menubar.active #arrow-tip {
+    transform: translateX(-15px);
+}
+
+#menubar.active .arrow-middle {
+    transform: translateX(-5px);
+}
+
+#menubar.active .arrow-end {
+    transform: translateX(5px);
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="../js/jquery/jquery.js"></script>
+        <script> 
+            $(function(){
+                $("#menu-arrow").load("../images/menu-arrow.svg"); 
+            });
+        </script> 
+    </head>
+    <body>
+        <header id="menubar" class="active">
+            <button id="menu-button" onclick="document.getElementById('menubar').classList.toggle('active');">
+                <div id="menu-arrow"></div>
+            </button>
+            <nav id="menu-nav">
+                <ul>
+                    <li><h1>CASSETTIFY</h1></li>
+                    <li id="logo-container"><img id="menu-logo" src="../images/icon.png" alt="Cassettify Logo"></li>
+                    <li><button id="home-button" class="page-button active" onclick="openPage('home')">Home</button></li>
+                    <li><button id="config-button" class="page-button" onclick="openPage('config')">Config</button></li>
+                    <li><button id="visuals-button" class="page-button" onclick="openPage('visuals')">Visuals</button></li>
+                    <li><button id="track-button" class="page-button" onclick="openPage('track')">Track</button></li>
+                    <li><button id="export-button" class="page-button" onclick="openPage('export')">Export</button></li>
+                </ul>
+            </nav>
+        </header>
+    </body>
+</html>

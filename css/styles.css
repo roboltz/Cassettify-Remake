@@ -1,0 +1,47 @@
+:root {
+    color-scheme: light dark;
+    --primary-bg-color: light-dark(#FBF7F0, #1f1f1f);
+    --secondary-bg-color: light-dark(#CDC9C3, #171616);
+    --accent-color: #d77bba;
+    --text-color: light-dark(#222831, #ffffff);
+}
+
+@font-face {
+    font-family: "Pixelated";
+    src: url(../font/pixelated.otf);
+}
+
+html, button, h1, h2, h3 {
+    font-family: "Pixelated";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 26px;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+}
+
+h2 {
+    text-align: center;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    background-color: var(--primary-bg-color);
+}
+
+button {
+    color: var(--text-color);
+    background-color: var(--secondary-bg-color);
+    padding: 4px;
+    border-color: var(--primary-bg-color);
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 50%;
+    box-shadow: 0 0 4px black;
+}
+
+button:hover {
+    background-color: var(--primary-bg-color);
+}

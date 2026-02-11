@@ -1,0 +1,16 @@
+<svg
+	width="30px"
+	height="30px"
+	viewBox="0 0 30 30"
+	xmlns="http://www.w3.org/2000/svg"
+	id="arrow-icon">
+	<defs>
+	<style><![CDATA[
+		#arrow-icon {
+			fill: var(--text-color);
+		}
+	]]></style>
+	</defs>
+	<polygon points="30,30 0,30 0,0 15,0 15,5 30,5" />
+		
+</svg>
