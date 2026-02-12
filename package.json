@@ -1,0 +1,23 @@
+{
+  "name": "cassettify-electron",
+  "version": "1.0.0",
+  "description": "An app for the game ROBOBEAT that extends the customs mapping options.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roboltz/Cassettify-Electron.git"
+  },
+  "author": "boltz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/roboltz/Cassettify-Electron/issues"
+  },
+  "homepage": "https://github.com/roboltz/Cassettify-Electron#readme",
+  "devDependencies": {
+    "electron": "^40.3.0"
+  }
+}
