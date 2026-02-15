@@ -7,7 +7,7 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       // Connect preload.js to main path
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload/preload.js'),
       sandbox: false
     }
   })

@@ -1,0 +1,1 @@
+window.metadata.initializeAudio("./music/song.mp3");

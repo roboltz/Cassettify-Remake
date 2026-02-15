@@ -1,4 +1,3 @@
-const { contextBridge, ipcRenderer } = require('electron');
 const { exec } = require('node:child_process');
 const fs = require('node:fs/promises');
 const util = require('util');
@@ -38,7 +37,7 @@ async function retrieveAudioCover(audioPath, outputImagePath) {
   return await runCommand(cmd);
 };
 
-async function initializeAudio(audioPath) {
+module.exports = async function initializeAudio (audioPath) {
   const songUUID = crypto.randomUUID();
   const folderPath = './cassettes/' + songUUID + '/';
   
@@ -49,7 +48,6 @@ async function initializeAudio(audioPath) {
   }
 
   const audioMeta = new Object();
-  audioMeta.uuid = songUUID;
   audioMeta.title = await audioTitle(audioPath);
   audioMeta.artist = await audioArtist(audioPath);
   audioMeta.duration = await audioDuration(audioPath);
@@ -63,9 +61,3 @@ async function initializeAudio(audioPath) {
 
   retrieveAudioCover(audioPath, folderPath + "cover.jpg" );
 }
-
-initializeAudio("./music/song.mp3")
-
-contextBridge.exposeInMainWorld('audio', {
-  initializeAudio: initializeAudio
-});

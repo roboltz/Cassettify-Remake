@@ -19,9 +19,5 @@
   "homepage": "https://github.com/roboltz/Cassettify-Electron#readme",
   "devDependencies": {
     "electron": "^40.3.0"
-  },
-  "dependencies": {
-    "@ffmpeg/ffmpeg": "^0.12.15",
-    "@ffmpeg/util": "^0.12.2"
   }
 }
