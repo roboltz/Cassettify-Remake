@@ -38,11 +38,16 @@ async function retrieveAudioCover(audioPath, outputImagePath) {
   return await runCommand(cmd);
 };
 
+async function convertAudio(audioPath, outputAudioPath) {
+  const cmd = `ffmpeg -i "${audioPath}" "${outputAudioPath}"`;
+  return await runCommand(cmd);
+}
+
 module.exports = async function initializeAudio (audioPath) {
   const songUUID = crypto.randomUUID();
   const folderPath = './cassettes/' + songUUID + '/';
   
-  fs.mkdir(folderPath, { recursive: true });
+  fs.mkdir(folderPath + "originalAudio/", { recursive: true });
 
   const audioMeta = new Object();
   audioMeta.filename = path.basename(audioPath);
@@ -53,5 +58,7 @@ module.exports = async function initializeAudio (audioPath) {
   const audioMetaStr = JSON.stringify(audioMeta, null, 2).replace(/\\n/g, '')
   await fs.writeFile(folderPath + "meta.json", audioMetaStr);
 
-  retrieveAudioCover(audioPath, folderPath + "cover.jpg" );
+  retrieveAudioCover(audioPath, folderPath + "cover.jpg");
+  convertAudio(audioPath, folderPath + "song.ogg");
+  await fs.copyFile(audioPath, folderPath + "originalAudio/" + path.basename(audioPath));
 }
