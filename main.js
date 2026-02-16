@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('node:path');
 
 const createWindow = () => {
@@ -7,7 +7,7 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       // Connect preload.js to main path
-      preload: path.join(__dirname, 'preload/preload.js'),
+      preload: path.join(__dirname, 'js/preload/preload.js'),
       sandbox: false
     }
   })
@@ -16,6 +16,18 @@ const createWindow = () => {
 
   win.loadFile('views/index.html');
 }
+
+// Handle getting audio files and return only their paths
+ipcMain.handle('open-file-dialog', async () => {
+  const audioFiles = await dialog.showOpenDialog({
+    properties: ['openFile', 'multiSelections'],
+    filters: [{ name: 'Audio', extensions: ['mp3', 'ogg', 'wav', 'flac'] }]
+  });
+
+  if (audioFiles.canceled) return [];
+
+  return audioFiles.filePaths;
+});
 
 // Start application
 app.whenReady().then(() => {

@@ -1,5 +1,6 @@
 const { exec } = require('node:child_process');
 const fs = require('node:fs/promises');
+const path = require('path');
 const util = require('util');
 const execPromise = util.promisify(exec);
 
@@ -9,7 +10,7 @@ async function runCommand(cmd) {
   if (stdout) {
     return stdout;
   } else {
-    return -1;
+    return null;
   }
 }
 
@@ -41,23 +42,16 @@ module.exports = async function initializeAudio (audioPath) {
   const songUUID = crypto.randomUUID();
   const folderPath = './cassettes/' + songUUID + '/';
   
-  try {
-    fs.mkdir(folderPath, { recursive: true });
-  } catch (err) {
-    console.error(err);
-  }
+  fs.mkdir(folderPath, { recursive: true });
 
   const audioMeta = new Object();
+  audioMeta.filename = path.basename(audioPath);
   audioMeta.title = await audioTitle(audioPath);
   audioMeta.artist = await audioArtist(audioPath);
   audioMeta.duration = await audioDuration(audioPath);
 
-  try {
-    const audioMetaStr = JSON.stringify(audioMeta, null, 2).replace(/\\n/g, '')
-    await fs.writeFile(folderPath + "meta.json", audioMetaStr);
-  } catch (err) {
-    console.error(err);
-  }
+  const audioMetaStr = JSON.stringify(audioMeta, null, 2).replace(/\\n/g, '')
+  await fs.writeFile(folderPath + "meta.json", audioMetaStr);
 
   retrieveAudioCover(audioPath, folderPath + "cover.jpg" );
 }
