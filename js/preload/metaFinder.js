@@ -53,7 +53,11 @@ async function retrieveAudioCover(audioPath) {
   fs.mkdir(coverFolderPath, { recursive: true });
 
   const cmd = `ffmpeg -y -i "${audioPath}" -map 0:v:0 -an "${tempCover}"`;
-  await runCommand(cmd);
+  try {
+    await runCommand(cmd);
+  } catch {
+    return null;
+  }
 
   const coverHash = await returnHash(tempCover);
   await fs.rename(tempCover, coverFolderPath + coverHash + ".jpg");
@@ -70,7 +74,7 @@ async function convertAudio(audioPath, outputPath) {
 
 
 module.exports = async function initializeAudio (audioPath) {
-  await fs.mkdir('./temp/');
+  await fs.mkdir('./temp/', { recursive: true });
 
   const songUUID = crypto.randomUUID();
   const folderPath = './cassettes/' + songUUID + '/';
