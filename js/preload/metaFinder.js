@@ -68,31 +68,35 @@ async function retrieveAudioCover(audioPath) {
 
 // Converts audio to another file type
 async function convertAudio(audioPath, outputPath) {
-  const cmd = `ffmpeg -i "${audioPath}" "${outputPath}"`;
+  const cmd = `ffmpeg -i "${audioPath}" -map 0:a -map_metadata -1 -ar 11025 "${outputPath}"`;
   return await runCommand(cmd);
 }
 
-
+// Grabs audio data and packs it into a form usuable by the application
 module.exports = async function initializeAudio (audioPath) {
-  await fs.mkdir('./temp/', { recursive: true });
+  // Temporary path used by the cover images before they are renamed
+  const tempPath = './temp/'
+  await fs.mkdir(tempPath, { recursive: true });
 
+  // Audio data will go into a folder named after a UUID
   const songUUID = crypto.randomUUID();
   const folderPath = './cassettes/' + songUUID + '/';
   
   await fs.mkdir(folderPath + "originalAudio/", { recursive: true });
 
+  // Create dictionary using metadata and convert to json file
   const audioMeta = new Object();
   audioMeta.filename = path.basename(audioPath);
   audioMeta.coverHash = await retrieveAudioCover(audioPath);
   audioMeta.title = await audioTitle(audioPath);
   audioMeta.artist = await audioArtist(audioPath);
   audioMeta.duration = await audioDuration(audioPath);
-
   const audioMetaStr = JSON.stringify(audioMeta, null, 2).replace(/\\n/g, '')
   await fs.writeFile(folderPath + "meta.json", audioMetaStr);
 
+  // Convert audio and copy original
   await convertAudio(audioPath, folderPath + "song.ogg");
   await fs.copyFile(audioPath, folderPath + "originalAudio/" + path.basename(audioPath));
 
-  await fs.rm('./temp/', { recursive: true, force: true });
+  await fs.rm(tempPath, { recursive: true, force: true });
 };
