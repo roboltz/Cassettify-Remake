@@ -7,6 +7,9 @@
     # If you have another system type you can add it here to test with nix develop.
     systems = [
       "x86_64-linux"
+      "aarch64-linux"
+      "x86_64-darwin"
+      "aarch64-darwin"
     ];
     perSystem = { pkgs, system, ... }: {
       devShells.default = pkgs.mkShell {
