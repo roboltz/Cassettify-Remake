@@ -1,22 +1,21 @@
 {
-  description = "Cassettify Package";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+  inputs.flake-parts.url = "github:hercules-ci/flake-parts";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  };
-
-  outputs = { self, nixpkgs }: 
-  let 
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
-  in 
-  {
-    devShells.${system}.default = pkgs.mkShell {
-      packages = with pkgs; [ nodejs electron ];
-      shellHook = ''
-        export ELECTRON_OVERRIDE_DIST_PATH="${pkgs.electron}/bin"
-        export ELECTRON_SKIP_BINARY_DOWNLOAD=1
-      '';
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+    # Other systems than the ones listed below are untested.
+    # If you have another system type you can add it here to test with nix develop.
+    systems = [
+      "x86_64-linux"
+    ];
+    perSystem = { pkgs, system, ... }: {
+      devShells.default = pkgs.mkShell {
+        packages = with pkgs; [ nodejs electron ];
+        shellHook = ''
+          export ELECTRON_OVERRIDE_DIST_PATH="${pkgs.electron}/bin"
+          export ELECTRON_SKIP_BINARY_DOWNLOAD=1
+        '';
+      };
     };
   };
 }
