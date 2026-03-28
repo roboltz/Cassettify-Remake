@@ -15,6 +15,7 @@
         shellHook = ''
           export ELECTRON_OVERRIDE_DIST_PATH="${pkgs.electron}/bin"
           export ELECTRON_SKIP_BINARY_DOWNLOAD=1
+          export ELECTRON_DISABLE_XDG_PORTAL=1
         '';
       };
     };

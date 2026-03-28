@@ -1,0 +1,117 @@
+:root {
+  --cassette-preview-size: 100px;
+  /* Keep this the same, the aspect ratio of the cassette image is 1.6 */
+  --cassette-preview-face-aspect: 1.6;
+  /* lower = thicker shape */
+  --cassette-preview-thinness: 8;
+  --cassette-preview-z-center: calc(calc(calc(var(--cassette-preview-face-aspect) * var(--cassette-preview-size)) / var(--cassette-preview-thinness)) / 2);
+}
+
+.cassette-model-body, #test-cassette {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  height: fit-content;
+  justify-content: center;
+  align-items: center;
+}
+
+.perspective {
+  position: relative;
+  perspective: 800px;
+  perspective-origin: 50% -200px;
+}
+
+#cassette-model {
+  width: var(--cassette-preview-size);
+  aspect-ratio: 1;
+  position: relative;
+  transform-style: preserve-3d;
+  /*animation: rotate 10s linear infinite;
+  transform: rotateY(25deg);
+  transition: transform 500ms cubic-bezier(0.075, 0.82, 0.165, 1);*/
+}
+
+/*.cassette-model:hover {
+  transform: rotateY(0deg);
+}*/
+
+.cassette-face {
+  position: absolute;
+  transform-style: preserve-3d;
+  background-color: #494949;
+  box-shadow: 0 0 0.5em black inset;
+}
+
+.cassette-face.front {
+    background:url("../images/cassetteFace.png");
+    background-color: white;
+    background-size: contain;
+    width: auto;
+    height: var(--cassette-preview-size);
+    right: calc(-100% * calc(calc(var(--cassette-preview-face-aspect) - 1) / 2));
+    aspect-ratio: var(--cassette-preview-face-aspect);
+}
+
+.cassette-face.bottom {
+  top: 100%;
+  transform-origin: top;
+  transform: rotateX(-90deg);
+  width: calc(var(--cassette-preview-face-aspect) * var(--cassette-preview-size));
+  right: calc(-100% * calc(calc(var(--cassette-preview-face-aspect) - 1) / 2));
+  aspect-ratio: var(--cassette-preview-thinness);
+  /*background-color: red;*/
+}
+
+.cassette-face.top {
+  bottom: 100%;
+  transform-origin: bottom;
+  transform: rotateX(90deg);
+  width: calc(var(--cassette-preview-face-aspect) * var(--cassette-preview-size));
+  right: calc(-100% * calc(calc(var(--cassette-preview-face-aspect) - 1) / 2));
+  aspect-ratio: var(--cassette-preview-thinness);
+  /*background-color: blue;*/
+}
+
+.cassette-face.back {
+  background:url("../images/cassetteFace.png");
+  background-color: white;
+  background-size: contain;
+  bottom: 100%;
+  transform-origin: bottom;
+  transform: translateY(var(--cassette-preview-size)) translateZ(calc(-1 * calc(var(--cassette-preview-size) * var(--cassette-preview-face-aspect))/ var(--cassette-preview-thinness)));
+  width: auto;
+  height: var(--cassette-preview-size);
+  right: calc(-100% * calc(calc(var(--cassette-preview-face-aspect) - 1) / 2));
+  aspect-ratio: var(--cassette-preview-face-aspect);
+  /*background-color: yellow;*/
+}
+
+.cassette-face.right {
+  transform-origin: left;
+  transform: rotateY(90deg);
+  width: auto;
+  height: var(--cassette-preview-size);
+  aspect-ratio: calc(var(--cassette-preview-face-aspect) / var(--cassette-preview-thinness));
+  left: calc(100% * calc(1 + calc(calc(var(--cassette-preview-face-aspect) - 1) / 2)));
+  /* background-color: indigo; */
+}
+
+.cassette-face.left {
+  transform-origin: right;
+  transform: rotateY(-90deg);
+  width: auto;
+  height: var(--cassette-preview-size);
+  aspect-ratio: calc(var(--cassette-preview-face-aspect) / var(--cassette-preview-thinness));
+  right: calc(100% * calc(1 + calc(calc(var(--cassette-preview-face-aspect) - 1) / 2)));
+  /* background-color: violet; */
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}

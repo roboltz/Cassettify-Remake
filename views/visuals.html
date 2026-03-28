@@ -2,5 +2,17 @@
 <html>
     <body>
         <h2>Visuals Page</h2>
+        <div id="test-cassette">
+        
+        <script>
+            fetch('./cassetteModel.html')
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('test-cassette').innerHTML = html;
+                    const script = document.createElement('script');
+                    script.src = '../js/render/cassetteMouseFollow.js';
+                    document.body.appendChild(script);
+                });
+        </script>
     </body>
 </html>

@@ -45,7 +45,6 @@ async function audioDuration(audioPath) {
   return await runCommand(cmd)
 };
 
-
 // Outputs the song cover named after its hash to the cover images folder
 async function retrieveAudioCover(audioPath) {
   const coverFolderPath = './cassetteAlbumCovers/';
@@ -64,7 +63,6 @@ async function retrieveAudioCover(audioPath) {
   
   return coverHash;
 };
-
 
 // Converts audio to another file type
 async function convertAudio(audioPath, outputPath) {

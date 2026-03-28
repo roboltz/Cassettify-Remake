@@ -1,5 +1,8 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const path = require('node:path');
+const fs = require('node:fs/promises');
+
+let win;
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -19,7 +22,7 @@ const createWindow = () => {
 
 // Handle getting audio files and return only their paths
 ipcMain.handle('open-file-dialog', async () => {
-  const audioFiles = await dialog.showOpenDialog({
+  const audioFiles = await dialog.showOpenDialog(win, {
     properties: ['openFile', 'multiSelections'],
     filters: [{ name: 'Audio', extensions: ['mp3', 'ogg', 'wav', 'flac'] }]
   });
@@ -27,6 +30,16 @@ ipcMain.handle('open-file-dialog', async () => {
   if (audioFiles.canceled) return [];
 
   return audioFiles.filePaths;
+});
+
+ipcMain.handle('get-cassette-data', async () => {
+  const cassetteFolder = __dirname + '/cassettes/';
+  let cassetteList = await fs.readdir(cassetteFolder);
+  let cassetteDataList = [];
+  for (let i = 0; i < cassetteList.length; i++)  {
+    cassetteDataList.push(JSON.parse(await fs.readFile(cassetteFolder + cassetteList[i] + '/meta.json')));
+  }
+  return cassetteDataList;
 });
 
 // Start application
