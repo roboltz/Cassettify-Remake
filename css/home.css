@@ -1,0 +1,22 @@
+#songlist-container {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    display: flexbox;
+    flex-direction: column;
+    background-color: var(--secondary-bg-color);
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    margin: auto;
+    width: 80%;
+    max-height: 60vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+.song-container {
+    padding: 20px;
+    margin: 20px;
+    border-radius: 8px;
+    list-style: none;
+    background-color: var(--primary-bg-color);
+
+}

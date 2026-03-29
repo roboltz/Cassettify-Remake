@@ -6,18 +6,3 @@ async function selectAudioFiles() {
     }
     await updateAudioFiles()
 }
-
-async function updateAudioFiles() {
-    const newDiv = document.createElement("div");
-    let cassetteData = await window.metadata.getCassetteData();
-
-    for (let i = 0; i < cassetteData.length; i++)  {
-        console.log(cassetteData[i]);
-        newDiv.textContent += cassetteData[i]["artist"] + " " + cassetteData[i]["title"] + "\n";
-        //newDiv.textContent += JSON.stringify(cassetteData[i], null, 2).replace(/\\n/g, '');
-    }
-    //const newContent = document.createTextNode(await window.metadata.getCassetteData());
-
-
-    document.body.appendChild(newDiv);
-}

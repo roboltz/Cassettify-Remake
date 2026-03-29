@@ -89,7 +89,7 @@ module.exports = async function initializeAudio (audioPath) {
   audioMeta.title = await audioTitle(audioPath);
   audioMeta.artist = await audioArtist(audioPath);
   audioMeta.duration = await audioDuration(audioPath);
-  const audioMetaStr = JSON.stringify(audioMeta, null, 2).replace(/\\n/g, '')
+  const audioMetaStr = JSON.stringify(audioMeta, null, 2).replace(/\\n|\\r/g, '');
   await fs.writeFile(folderPath + "meta.json", audioMetaStr);
 
   // Convert audio and copy original

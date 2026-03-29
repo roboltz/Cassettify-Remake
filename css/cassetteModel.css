@@ -1,5 +1,5 @@
 :root {
-  --cassette-preview-size: 100px;
+  --cassette-preview-size: 4em;
   /* Keep this the same, the aspect ratio of the cassette image is 1.6 */
   --cassette-preview-face-aspect: 1.6;
   /* lower = thicker shape */
