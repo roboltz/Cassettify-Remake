@@ -1,7 +1,9 @@
 .page {
     display: none;
+    flex-direction: column;
+    height: 100vh;
 }
 
 .page.active {
-    display: block;
+    display: flex;
 }

@@ -8,16 +8,34 @@
 
 @font-face {
     font-family: "Pixelated";
-    src: url(../font/pixelated.otf);
+    src: url(../font/pixelated/pixelated.otf);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+}
+
+@font-face {
+    font-family: "Quicksand";
+    src: url(../font/Quicksand/Quicksand-Bold.ttf);
+}
+
+@font-face {
+    font-family: "SymbolsNF Mono";
+    src: url(../font/NerdFontsSymbolsOnly/SymbolsNerdFontMono-Regular.ttf);
+}
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
 }
 
 html, button, h1, h2, h3 {
-    font-family: "Pixelated";
-    font-style: normal;
+    font-family: "Pixelated", "SymbolsNF Mono";
     font-weight: normal;
+    font-style: normal;
     font-size: 26px;
-    font-smooth: never;
-    -webkit-font-smoothing: none;
 }
 
 h2 {
@@ -31,7 +49,7 @@ body {
     background-color: var(--primary-bg-color);
 }
 
-button {
+button, input {
     color: var(--text-color);
     background-color: var(--secondary-bg-color);
     padding: 4px;
@@ -40,6 +58,12 @@ button {
     border-width: 2px;
     border-radius: 50%;
     box-shadow: 0 0 4px black;
+}
+
+input {
+    font-family: "Pixelated", "SymbolsNF Mono";
+    font-size: 26px;
+    border-radius: 8px;
 }
 
 button:hover {

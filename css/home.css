@@ -1,22 +1,123 @@
-#songlist-container {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    display: flexbox;
-    flex-direction: column;
-    background-color: var(--secondary-bg-color);
-    border: 2px solid var(--accent-color);
+#file-select {
+    width: 50%;
     border-radius: 8px;
     margin: auto;
+}
+
+#song-search {
+    margin: 20px auto auto auto;
+    width: fit-content;
+}
+
+#song-search input {
+    margin: auto;
+    text-align: center;
+    width: fit-content;
+}
+
+#songlist-container {
+    font-family: "Quicksand", "SymbolsNF Mono";
+    display: flexbox;
+    flex-direction: column;
+    /*background-color: var(--secondary-bg-color);*/
+    margin: 20px auto 100px auto;
+    border: 2px solid var(--accent-color);
+    border-left: none;
+    border-right: none;
+    border-radius: 16px;
+    /*padding: 20vh 0;*/
     width: 80%;
-    max-height: 60vh;
-    overflow-y: scroll;
+    height: 100%;
+    overflow-y: auto;
     scrollbar-width: none;
+    min-height: 0;
+    flex: 1;
 }
 
 .song-container {
-    padding: 20px;
+    display: none;
+    padding: 4px;
     margin: 20px;
+    border: 2px solid var(--primary-bg-color);
     border-radius: 8px;
     list-style: none;
-    background-color: var(--primary-bg-color);
+    background-color: var(--secondary-bg-color);
+    box-shadow: 0 0 4px black;
+    white-space: nowrap;
+}
 
+.song-container.searched {
+    display: block;
+}
+
+.song-container figure {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.song-container figcaption {
+    overflow: hidden;
+}
+
+.song-container figcaption ul {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.image-container {
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+}
+
+.image-container img {
+    width: 128px;
+    height: 128px;
+    border: 2px solid var(--accent-color);
+    border-radius: 8px;
+    box-shadow: 2px 2px 6px black;
+    transition: filter 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.image-container::after {
+    font-size: larger;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.image-container:hover img, .song-container.active .image-container img {
+    filter: brightness(1.6) contrast(0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+    .image-container:hover img, .song-container.active .image-container img {
+        filter: brightness(0.2);
+    }
+}
+
+.image-container:hover img {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.image-container:hover::after, .song-container.active .image-container::after {
+    opacity: 1;
+}
+
+.song-container .image-container::after {
+    content: '';
+}
+
+.song-container.active .image-container::after {
+    content: '';
 }

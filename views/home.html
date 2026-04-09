@@ -2,12 +2,14 @@
 <html>
     <head>
         <link rel="stylesheet" href="../css/home.css">
+        <script src="../js/render/home.js"></script>
     </head>
     <body>
         <h2 id="test">Home Page</h2>
-        <button onclick="selectAudioFiles();">Select Files</button>
-
+        <button id="file-select" onclick="selectAudioFiles();">Select Files</button>
+        <div id="song-search">
+            <input id="song-search-input" type="text" placeholder="Search Song..."/>
+        </div>
         <div id="songlist-container"></div>
     </body>
-    <script src="../js/render/home.js"></script>
 </html>

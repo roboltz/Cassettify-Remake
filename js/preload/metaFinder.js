@@ -6,7 +6,7 @@ const util = require('util');
 const execPromise = util.promisify(exec);
 
 async function runCommand(cmd) {
-  console.log("running command: " + cmd);
+  //console.log("running command: " + cmd);
   const { stdout, _ } = await execPromise(cmd);
   if (stdout) {
     return stdout;
@@ -85,6 +85,7 @@ module.exports = async function initializeAudio (audioPath) {
   // Create dictionary using metadata and convert to json file
   const audioMeta = new Object();
   audioMeta.filename = path.basename(audioPath);
+  audioMeta.UUID = songUUID;
   audioMeta.coverHash = await retrieveAudioCover(audioPath);
   audioMeta.title = await audioTitle(audioPath);
   audioMeta.artist = await audioArtist(audioPath);

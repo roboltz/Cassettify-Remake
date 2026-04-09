@@ -32,6 +32,7 @@ ipcMain.handle('open-file-dialog', async () => {
   return audioFiles.filePaths;
 });
 
+// Read and return metadata from each cassette in the cassettes folder as a dictionary
 ipcMain.handle('get-cassette-data', async () => {
   const cassetteFolder = __dirname + '/cassettes/';
   let cassetteList = await fs.readdir(cassetteFolder);
@@ -39,7 +40,7 @@ ipcMain.handle('get-cassette-data', async () => {
   for (let i = 0; i < cassetteList.length; i++)  {
     cassetteDataList.push(JSON.parse(await fs.readFile(cassetteFolder + cassetteList[i] + '/meta.json')));
   }
-  return cassetteDataList;
+  return cassetteDataList.sort((a, b) => a.artist.localeCompare(b.artist));
 });
 
 // Start application
