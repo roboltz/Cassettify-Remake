@@ -2,8 +2,8 @@
 Some ideas of app features, not all have to be done before the app is considered releasable.
 
 ## Homepage
-1. Make a scrollable list containing uploaded songs
-2. Make a 3d cassette that faces towards the cursors showing the current custom cassette cover (separate from the album cover maybe)
+1. ~~Make a scrollable list containing uploaded songs~~
+2. ~~Make a 3d cassette that faces towards the cursors showing the current custom cassette cover~~
 3. make a loading screen to be shown when doing long processes like extracting song metadata and loading data into memory to be shown on list
 
 ## Configuration
