@@ -19,5 +19,9 @@
   "homepage": "https://github.com/roboltz/Cassettify-Electron#readme",
   "devDependencies": {
     "electron": "^40.3.0"
+  },
+  "dependencies": {
+    "node-vibrant": "^4.0.4",
+    "wavesurfer.js": "^7.12.8"
   }
 }

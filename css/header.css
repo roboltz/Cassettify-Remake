@@ -27,12 +27,21 @@ header > button {
     transform: translateX(0);
 }
 
-body {
-    transition: margin-left 250ms cubic-bezier(0.165, 0.84, 0.44, 1);
+#pages {
+    transition: margin-left 250ms cubic-bezier(0.165, 0.84, 0.44, 1), width 250ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
 }
 
-body:has(#menubar.active) {
+body:has(#menubar.active) #pages {
     margin-left: var(--nav-width);
+    width: calc(100vw - var(--nav-width));
+}
+
+body:not(:has(#menubar.active)) #pages {
+    margin-left: 0;
+    width: 100vw;
 }
 
 #menu-button {

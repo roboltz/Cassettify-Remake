@@ -3,34 +3,90 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob: file:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: file:;">
         <link rel="stylesheet" href="../css/styles.css">
         <link rel="stylesheet" href="../css/header.css">
         <link rel="stylesheet" href="../css/menu-arrow.css">
         <link rel="stylesheet" href="../css/pages.css">
         <title>Cassettify</title>
         <script src="../js/render/pageManager.js"></script>
+        <script src="../node_modules/wavesurfer.js/dist/wavesurfer.min.js"></script>
+        <script src="../node_modules/wavesurfer.js/dist/plugins/regions.min.js"></script>
+        <script src="../node_modules/wavesurfer.js/dist/plugins/timeline.min.js"></script>
+        <script src="../js/three/three.min.js"></script>
+        <script src="../js/three/OBJLoader.js"></script>
         <script src="../js/jquery/jquery.js"></script>
-        <script>
-            $(function(){
-                $("#header").load("../views/header.html"); 
-                $("#audio-player").load("../views/audioPlayer.html");
-                $("#home-page").load("../views/home.html");
-                $("#config-page").load("../views/config.html");
-                $("#visuals-page").load("../views/visuals.html");
-                $("#track-page").load("../views/track.html");
-                $("#export-page").load("../views/export.html");
-            });
-        </script>
     </head>
     <body>
         <div id="header"></div>
-        <div id="audio-player"></div>
-    </body>
-    <div id="pages">
-        <div id="home-page" class="page active"></div>
+        <div id="pages">
+            <div id="home-page" class="page active"></div>
         <div id="config-page" class="page"></div>
         <div id="visuals-page" class="page"></div>
         <div id="track-page" class="page"></div>
         <div id="export-page" class="page"></div>
+        <div id="settings-page" class="page"></div>
     </div>
+</body>
+
+    <script>
+        // Load all HTML fragments, then load all page scripts once the DOM is fully populated
+        $(function() {
+            const loads = [
+                $("#header").load("../views/header.html"),
+                $("#home-page").load("../views/home.html"),
+                $("#config-page").load("../views/config.html"),
+                $("#visuals-page").load("../views/visuals.html"),
+                $("#track-page").load("../views/track.html"),
+                $("#export-page").load("../views/export.html"),
+                $("#settings-page").load("../views/settings.html")
+            ];
+
+            // $.when on .load() doesn't work natively — use a counter instead
+            let remaining = loads.length;
+            function onLoaded() {
+                remaining--;
+                if (remaining > 0) return;
+                console.log('[index] All fragments loaded — bootstrapping page scripts');
+
+                const scripts = [
+                    "../js/render/cassette3d.js",
+                    "../js/render/home.js",
+                    "../js/render/config.js",
+                    "../js/render/visuals.js",
+                    "../js/render/track.js",
+                    "../js/render/export.js",
+                    "../js/render/settings.js"
+                ];
+
+                function loadNext(i) {
+                    if (i >= scripts.length) {
+                        console.log('[index] All page scripts loaded ✅ — running page inits');
+                        // Now that all scripts and DOM fragments are ready, initialize each page
+                        if (typeof window.initHomePage === 'function') window.initHomePage();
+                        if (typeof window.initSettingsPage === 'function') window.initSettingsPage();
+                        return;
+                    }
+                    $.getScript(scripts[i])
+                        .done(() => {
+                            console.log('[index] Loaded script:', scripts[i]);
+                            loadNext(i + 1);
+                        })
+                        .fail((jqxhr, settings, ex) => {
+                            console.error('[index] Failed to load script:', scripts[i], ex);
+                            loadNext(i + 1);
+                        });
+                }
+                loadNext(0);
+            }
+
+            $("#header").load("../views/header.html", onLoaded);
+            $("#home-page").load("../views/home.html", onLoaded);
+            $("#config-page").load("../views/config.html", onLoaded);
+            $("#visuals-page").load("../views/visuals.html", onLoaded);
+            $("#track-page").load("../views/track.html", onLoaded);
+            $("#export-page").load("../views/export.html", onLoaded);
+            $("#settings-page").load("../views/settings.html", onLoaded);
+        });
+    </script>
 </html>

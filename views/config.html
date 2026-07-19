@@ -1,6 +1,48 @@
-<!DOCTYPE html>
-<html>
-    <body>
-        <h2>Config Page</h2>
-    </body>
-</html>
+<div class="config-container">
+    <!-- Left Panel: Settings Form -->
+    <div class="config-left card-glass">
+        <h3 style="margin-top: 0; color: var(--accent-color);">Metadata Settings</h3>
+        
+        <div class="form-group">
+            <label for="song-title">Song Title</label>
+            <input type="text" id="song-title" placeholder="Enter song title">
+        </div>
+        
+        <div class="form-group" style="margin-top: 10px;">
+            <label for="song-author">Artist / Author</label>
+            <input type="text" id="song-author" placeholder="Enter artist name">
+        </div>
+        
+        <div class="form-group checkbox-row" style="margin-top: 15px;">
+            <label class="custom-checkbox-container">
+                <input type="checkbox" id="chk-use-extracted">
+                <span class="checkbox-checkmark"></span>
+                <span class="checkbox-label">Use Original Extracted Info</span>
+            </label>
+        </div>
+    </div>
+    
+    <!-- Right Panel: Original Metadata Display -->
+    <div class="config-right card-glass">
+        <h3 style="margin-top: 0; color: var(--accent-color);">Original Audio Info</h3>
+        
+        <div class="info-list">
+            <div class="info-item">
+                <span class="info-label">Original Title</span>
+                <span id="extracted-title" class="info-val">No Title Found</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Original Artist</span>
+                <span id="extracted-author" class="info-val">No Artist Found</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Length</span>
+                <span id="extracted-duration" class="info-val">0.00 Seconds</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Source File</span>
+                <span id="config-file-name" class="info-val" style="word-break: break-all; font-size: 0.9em; color: #888;">No File Loaded</span>
+            </div>
+        </div>
+    </div>
+</div>

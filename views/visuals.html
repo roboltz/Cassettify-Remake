@@ -1,18 +1,128 @@
-<!DOCTYPE html>
-<html>
-    <body>
-        <h2>Visuals Page</h2>
-        <div id="test-cassette">
-        
-        <script>
-            fetch('./cassetteModel.html')
-                .then(res => res.text())
-                .then(html => {
-                    document.getElementById('test-cassette').innerHTML = html;
-                    const script = document.createElement('script');
-                    script.src = '../js/render/cassetteMouseFollow.js';
-                    document.body.appendChild(script);
-                });
-        </script>
-    </body>
-</html>
+<div class="visuals-container">
+    <!-- Left Panel: Controls -->
+    <div class="visuals-left">
+        <!-- Colors & Pattern Card -->
+        <div class="card-glass">
+            <h4 class="card-heading">Cassette Appearance</h4>
+
+            <div class="form-group">
+                <label>Body Color</label>
+                <div class="color-row">
+                    <input type="color" id="cassette-color" value="#ffffff" class="color-swatch">
+                    <button id="btn-auto-cassette-color" class="btn-small">🎨 Auto Palette</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Label Color</label>
+                <div class="color-row">
+                    <input type="color" id="label-color" value="#ffffff" class="color-swatch">
+                    <button id="btn-auto-label-color" class="btn-small">🎨 Auto Palette</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="pattern-select">Pattern</label>
+                <select id="pattern-select" class="styled-select">
+                    <option value="CUSTOM">Custom Texture</option>
+                    <option value="DEFAULT">Default</option>
+                    <option value="ANNAT1">Annat 1</option>
+                    <option value="ANNAT2">Annat 2</option>
+                    <option value="ANNAT3">Annat 3</option>
+                    <option value="ARTEFACT1">Artefact 1</option>
+                    <option value="ARTEFACT2">Artefact 2</option>
+                    <option value="CROC">Croc</option>
+                    <option value="ILLUSION1">Illusion 1</option>
+                    <option value="ILLUSION2">Illusion 2</option>
+                    <option value="MASSIVE1">Massive 1</option>
+                    <option value="MASSIVE2">Massive 2</option>
+                    <option value="MUSEUM1">Museum 1</option>
+                    <option value="MUSEUM2">Museum 2</option>
+                    <option value="PASSAGE1">Passage 1</option>
+                    <option value="PASSAGE2">Passage 2</option>
+                    <option value="bpm1">BPM 1</option>
+                </select>
+            </div>
+
+            <div class="palette-preview" id="palette-preview">
+                <!-- Palette swatches injected here -->
+            </div>
+        </div>
+
+        <!-- Cover Alignment Card -->
+        <div id="cover-alignment-card" class="card-glass">
+            <h4 class="card-heading">Cover Alignment</h4>
+
+            <div class="slider-grid">
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Scale X</label>
+                        <span class="slider-value" id="val-scale-x">100%</span>
+                    </div>
+                    <input type="range" id="cover-scale-x" min="10" max="200" value="100" class="styled-range">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Scale Y</label>
+                        <span class="slider-value" id="val-scale-y">100%</span>
+                    </div>
+                    <input type="range" id="cover-scale-y" min="10" max="200" value="100" class="styled-range">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Offset X</label>
+                        <span class="slider-value" id="val-offset-x">0px</span>
+                    </div>
+                    <input type="range" id="cover-offset-x" min="-100" max="100" value="0" class="styled-range">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <label>Offset Y</label>
+                        <span class="slider-value" id="val-offset-y">0px</span>
+                    </div>
+                    <input type="range" id="cover-offset-y" min="-100" max="100" value="0" class="styled-range">
+                </div>
+                <div class="slider-group full-width">
+                    <div class="slider-header">
+                        <label>Rotation</label>
+                        <span class="slider-value" id="val-rotation">0°</span>
+                    </div>
+                    <input type="range" id="cover-rotation" min="-180" max="180" value="0" class="styled-range">
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button id="btn-reset-cover-align" class="btn-small" style="flex: 1;">↺ Reset</button>
+                <button id="btn-save-global-align" class="btn-small" style="flex: 1;" title="Set these settings as default for new cassettes">📌 Set Default</button>
+            </div>
+        </div>
+
+        <!-- Stickers Card -->
+        <div id="stickers-card" class="card-glass">
+            <h4 class="card-heading">Stickers</h4>
+            <p class="card-desc">Add custom image overlays to the cassette face.</p>
+            <div style="display: flex; gap: 8px;">
+                <button id="btn-add-sticker" class="btn-primary" style="flex: 1; padding: 8px 12px; font-size: 0.85em;">➕ Add Sticker</button>
+                <button id="btn-clear-stickers" class="btn-small">🗑 Clear</button>
+            </div>
+            <input type="file" id="file-sticker-upload" accept="image/png, image/jpeg" style="display: none;">
+            <div id="stickers-control-list" class="stickers-list">
+                <!-- Sticker elements will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Panel: Preview -->
+    <div class="visuals-right">
+
+
+        <!-- Cassette Preview -->
+        <div class="card-glass" style="align-items: center; flex: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <h4 class="card-heading">Live 3D Preview</h4>
+            </div>
+            <div class="cassette-3d-model" id="visuals-cassette-model" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 350px;">
+                <div id="visuals-3d-canvas-container" style="width: 100%; height: 100%; background: transparent; overflow: hidden; border-radius: 8px;"></div>
+            </div>
+        </div>
+    </div>
+</div>

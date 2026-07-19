@@ -7,9 +7,6 @@ async function updateAudioFiles() {
     cassetteData = await window.metadata.getCassetteData();
     const audioListContainer = document.getElementById("songlist-container");
 
-
-    document.getElementById("audio-player-button").classList.remove('active');
-
     for (let i = 0; i < audioList.length; i++) {
         audioList[i].pause();
         audioList[i].currentTime = 0;
@@ -26,10 +23,14 @@ async function updateAudioFiles() {
         const audio = new Audio(`../cassettes/${data.UUID}/originalAudio/${data.filename}`);
         audioList[i] = audio;
 
+        const coverSrc = data.coverHash 
+            ? `../cassetteAlbumCovers/${data.coverHash}.jpg` 
+            : '../images_original/SmallCustomCassetteTemplate.png';
+
         audioContainer.innerHTML = `
             <figure>
                 <div class="image-container" onclick="toggleAudio(${i});">
-                    <img src="../cassetteAlbumCovers/${data.coverHash}.jpg" alt="${data.coverHash}"/>
+                    <img src="${coverSrc}" alt="cover"/>
                 </div>
                 <figcaption>
                     <li>
@@ -39,7 +40,7 @@ async function updateAudioFiles() {
                 </figcaption>
                 <div class="song-container-buttons">
                     <button></button>
-                    <button></button>
+                    <button onclick="openConfigForCassette(${i})"></button>
                     <button></button>
                 </div>
             </figure>
@@ -56,45 +57,45 @@ async function updateAudioFiles() {
 
 async function selectAudioFiles() {
     const audioPaths = await window.filesystem.openFileDialog();
-    // creates an item in the cassettes folder for each file selected in the file dialog
-    for (const path of audioPaths) {
-        await window.metadata.initializeAudio(path);
+    if (audioPaths && audioPaths.length > 0) {
+        await handlePaths(audioPaths);
     }
-    await updateAudioFiles()
 }
 
 
 async function setAudioState(i) {
     const data = await cassetteData[i]
+    window.currentCassetteUUID = data.UUID;
+    window.cassetteData = cassetteData;
+
     const audio = audioList[i];
     const element = document.getElementById("song-container-" + i);
-    const audioPlayerButton = document.getElementById("audio-player-button");
-    const audioPlayerCover = document.getElementById("audio-player-cover");
-    const audioPlayerTitle = document.getElementById("audio-player-title");
 
-    audioPlayerCover.src = `../cassetteAlbumCovers/${(data.coverHash)}.jpg`;
-    audioPlayerTitle.innerHTML = `${data.artist} - ${data.title}`;
+    const coverSrc = data.coverHash 
+        ? `../cassetteAlbumCovers/${data.coverHash}.jpg` 
+        : '../images_original/SmallCustomCassetteTemplate.png';
+        
+        
 
     for (let j = 0; j < audioList.length; j++) {
         if (j != i && audio.paused) {
             audioList[j].pause();
             audioList[j].currentTime = 0;
-            document.getElementById("song-container-" + j).classList.remove('active');
-        };
-    };
-
-    if (element.classList.contains('active')) {
-        audio.play();
+            const otherElement = document.getElementById("song-container-" + j);
+            if (otherElement) otherElement.classList.remove('active');
+        }
     }
-    else {
-        audio.pause();
-    };
 
-    updateSongTime();
+    if (element) {
+        if (element.classList.contains('active')) {
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    }
 
     audio.addEventListener('ended', () => {
-        element.classList.remove('active');
-        audioPlayerButton.classList.remove('active');
+        if (element) element.classList.remove('active');
     });
 }
 
@@ -116,48 +117,141 @@ function searchAudio(searchInput) {
     };
 };
 
-function toggleAudio(i, usedAudioPlayer=false) {
+function toggleAudio(i, usedAudioPlayer = false) {
     activeAudioIndex = i;
     const songContainerElement = document.getElementById('song-container-' + i);
-    const audioPlayerButton = document.getElementById('audio-player-button')
-    if (usedAudioPlayer) {
-        audioPlayerButton.classList.toggle('active');
-        if (audioPlayerButton.classList.contains('active')) {
-            songContainerElement.classList.add('active');
-        }
-        else {
-            songContainerElement.classList.remove('active');
-        };
-    }
-    else {
+    
+    if (songContainerElement) {
         songContainerElement.classList.toggle('active');
-        if (songContainerElement.classList.contains('active')) {
-            audioPlayerButton.classList.add('active');
-        }
-        else {
-            audioPlayerButton.classList.remove('active');
-        };
-    };
+    }
 
     setAudioState(i);
-};
+}
 
-setInterval(updateSongTime, 1000);
+function openConfigForCassette(i) {
+    const data = cassetteData[i];
+    window.currentCassetteUUID = data.UUID;
+    window.cassetteData = cassetteData; // keep global reference up to date
 
-function updateSongTime() {
-    const audio = audioList[activeAudioIndex];
-    const audioTime = document.getElementById('audio-player-time');
-    const audioProgressBar = document.getElementById('audio-player-progress-level')
-    if (audio && !audio.paused) {
-        audioTime.innerHTML = `${Math.floor(audio.currentTime / 60)}:${String(Math.floor(audio.currentTime % 60)).padStart(2, '0')} | ${Math.floor(audio.duration / 60)}:${String(Math.floor(audio.duration % 60)).padStart(2, '0')}`;
-        audioProgressBar.style.width = (audio.currentTime / audio.duration * 100) + "%";
-        audioProgressBar.style.transition = "width 1s linear";
+    openPage('config');
+
+    // config.js listens for this after the page is loaded
+    if (typeof window.refreshConfigPage === 'function') {
+        window.refreshConfigPage();
+    }
+
+    // Smart Palette Extraction (only run if we haven't already extracted colors for this cassette)
+    if (!data.colors && window.metadata.extractPalette && data.coverHash) {
+        window.metadata.extractPalette(data.coverHash).then(result => {
+            if (result.success) {
+                data.colors = result.palette;
+                window.metadata.saveCassetteData(data.UUID, { colors: result.palette });
+            }
+        });
     }
 }
 
-updateAudioFiles();
+function showLoadingScreen(msg = 'Processing...') {
+    const loadingScreen = document.getElementById('loading-screen');
+    const loadingText = document.getElementById('loading-text');
+    if (loadingScreen) loadingScreen.style.display = 'flex';
+    if (loadingText) loadingText.textContent = msg;
+}
 
-const songSearchInput = document.getElementById("song-search");
-songSearchInput.addEventListener('input', (e) => {
-    searchAudio(e.target.value);
-});
+function hideLoadingScreen() {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) loadingScreen.style.display = 'none';
+}
+
+
+
+async function handlePaths(allPaths) {
+    console.log('[handlePaths] valid paths to process:', allPaths);
+
+    if (!allPaths || allPaths.length === 0) {
+        console.warn('[handlePaths] No paths found.');
+        return;
+    }
+
+    showLoadingScreen(`Processing 0 / ${allPaths.length}...`);
+    let done = 0;
+    const errors = [];
+
+    for (const filePath of allPaths) {
+        console.log(`[handlePaths] Processing (${done + 1}/${allPaths.length}):`, filePath);
+        try {
+            if (window.metadata && window.metadata.initializeAudio) {
+                const autoMetaSetting = localStorage.getItem('settings-auto-meta') !== 'false';
+                await window.metadata.initializeAudio(filePath, !autoMetaSetting);
+                console.log(`[handlePaths] ✅ Done:`, filePath);
+            }
+        } catch (err) {
+            const name = filePath.replace(/\\/g, '/').split('/').pop();
+            console.error(`[handlePaths] ❌ Failed:`, filePath, err);
+            errors.push(`${name}: ${err.message || err}`);
+        }
+        done++;
+        showLoadingScreen(`Processing ${done} / ${allPaths.length}...`);
+    }
+
+    await updateAudioFiles();
+    hideLoadingScreen();
+
+    if (errors.length > 0) {
+        alert(`${errors.length} file(s) failed to import:\n${errors.slice(0, 5).join('\n')}`);
+    }
+}
+
+// Called by index.html after all fragments are injected into the DOM
+window.initHomePage = function () {
+    console.log('[home.js] initHomePage called');
+
+    // Load existing cassettes
+    updateAudioFiles();
+
+    // Search
+    const songSearchInput = document.getElementById('song-search-input');
+    if (songSearchInput) {
+        songSearchInput.addEventListener('input', (e) => searchAudio(e.target.value));
+    }
+
+    // Drag and Drop Logic
+    const dropZone = document.getElementById('drop-zone');
+
+    if (dropZone) {
+        console.log('[DropZone] drop zone found — attaching listeners');
+
+        dropZone.addEventListener('click', async () => {
+            console.log('[DropZone] clicked — opening native file picker');
+            await selectAudioFiles();
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', async (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            console.log('[DropZone] drop event, files:', e.dataTransfer.files.length);
+            if (e.dataTransfer.files.length) {
+                const paths = Array.from(e.dataTransfer.files).map(f => f.path).filter(Boolean);
+                if (paths.length > 0) {
+                    await handlePaths(paths);
+                } else {
+                    alert('Could not read dropped file paths. Web security may be blocking it. Please use click instead.');
+                }
+            } else {
+                console.warn('[DropZone] drop event fired but no files in dataTransfer');
+            }
+        });
+    } else {
+        console.error('[DropZone] MISSING ELEMENTS — dropZone:', !!dropZone);
+    }
+};

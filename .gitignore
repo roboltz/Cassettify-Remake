@@ -1,4 +1,29 @@
-node_modules
-temp
-cassettes
-cassetteAlbumCovers
+# Dependencies
+node_modules/
+
+# User data (generated at runtime)
+cassettes/
+cassetteAlbumCovers/
+
+# Temp / build artifacts
+temp/
+temp_export/
+beat_finder/output/
+
+# Editor & IDE
+*.code-workspace
+.vscode/
+.idea/
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Nix (optional local dev)
+result
+.direnv/

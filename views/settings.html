@@ -1,0 +1,44 @@
+<div class="settings-container">
+    <h3>Application Settings</h3>
+
+    <div class="settings-card">
+        <!-- Appearance Settings -->
+        <div class="settings-section">
+            <h4>Appearance</h4>
+            <div class="settings-option">
+                <label for="settings-theme">Theme Mode</label>
+                <select id="settings-theme" class="settings-select">
+                    <option value="system">Match System</option>
+                    <option value="dark">Dark Mode</option>
+                    <option value="light">Light Mode</option>
+                </select>
+            </div>
+            <div class="settings-option">
+                <label for="settings-font">Font Style</label>
+                <select id="settings-font" class="settings-select">
+                    <option value="Quicksand">Quicksand (Default)</option>
+                    <option value="System">System Sans-serif</option>
+                    <option value="Courier New">Monospace</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Automation Settings -->
+        <div class="settings-section">
+            <h4>Automation</h4>
+            <div class="settings-option-row">
+                <input type="checkbox" id="settings-auto-meta" checked>
+                <label for="settings-auto-meta">Auto-extract metadata on import</label>
+            </div>
+        </div>
+
+        <!-- Data Management -->
+        <div class="settings-section dangerous-zone">
+            <h4>Danger Zone</h4>
+            <p class="settings-desc">Resetting user data will delete all imported cassettes, visual settings, and stored metadata.</p>
+            <button id="btn-reset-data" class="btn-danger">
+                ⚠️ Reset All User Data
+            </button>
+        </div>
+    </div>
+</div>

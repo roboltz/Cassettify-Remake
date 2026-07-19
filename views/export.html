@@ -1,6 +1,70 @@
-<!DOCTYPE html>
-<html>
-    <body>
-        <h2>Export Page</h2>
-    </body>
-</html>
+<div class="export-container">
+    <button id="btn-close-export" class="export-close-btn" onclick="closeExportModal()">&times;</button>
+    <h3>Export Cassette</h3>
+
+    <!-- Song Summary Card -->
+    <div class="export-summary-card" id="export-summary-card" style="display:none;">
+        <img id="export-cover" src="" alt="Cover" class="export-cover-img">
+        <div class="export-summary-info">
+            <div id="export-title" class="export-title"></div>
+            <div id="export-artist" class="export-artist"></div>
+            <div id="export-duration" class="export-meta"></div>
+        </div>
+    </div>
+
+    <!-- Checklist -->
+    <div class="export-checklist" id="export-checklist">
+        <h4>Export Readiness Checklist</h4>
+        <div class="checklist-item" id="check-audio">
+            <span class="check-icon">⬜</span>
+            <span>Audio file linked</span>
+        </div>
+        <div class="checklist-item" id="check-title">
+            <span class="check-icon">⬜</span>
+            <span>Song title set</span>
+        </div>
+        <div class="checklist-item" id="check-artist">
+            <span class="check-icon">⬜</span>
+            <span>Artist name set</span>
+        </div>
+        <div class="checklist-item" id="check-cover">
+            <span class="check-icon">⬜</span>
+            <span>Album cover available</span>
+        </div>
+        <div class="checklist-item" id="check-beats">
+            <span class="check-icon">⬜</span>
+            <span>Beat timestamps detected</span>
+        </div>
+    </div>
+
+    <!-- Format Selection -->
+    <div class="export-format" id="export-format">
+        <h4>Output Format</h4>
+        <div class="format-options">
+            <label class="format-option">
+                <input type="radio" name="export-format" value="robobeat" checked>
+                <span class="format-label">
+                    <strong>.robobeat</strong>
+                    <small>ROBOBEAT game cassette</small>
+                </span>
+            </label>
+            <label class="format-option">
+                <input type="radio" name="export-format" value="json">
+                <span class="format-label">
+                    <strong>JSON metadata</strong>
+                    <small>Raw cassette data file</small>
+                </span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Export button -->
+    <div style="margin-top: 20px;">
+        <button id="btn-export" class="btn-primary btn-large" disabled>
+            📦 Export Cassette
+        </button>
+        <p id="export-status" style="margin-top: 10px; color: #aaa;"></p>
+    </div>
+</div>
+
+
